@@ -1,0 +1,15 @@
+{
+    "channel_names": {
+        "0": "R",
+        "1": "G",
+        "2": "B"
+    },
+    "labels": {
+        "background": 0,
+        "lung": 1
+    },
+    "numTraining": 493,
+    "file_ending": ".png",
+    "name": "Dataset802_LungXray",
+    "description": "This dataset was from https://www.kaggle.com/datasets/nikhilpandey360/chest-xray-masks-and-labels."
+}
