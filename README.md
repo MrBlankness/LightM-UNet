@@ -14,7 +14,7 @@ Thanks again for your interest! o(￣▽￣)ブ
 
 LightM-UNet is a lightweight fusion of UNet and Mamba, boasting a mere parameter count of **1M**. Through validation on both 2D and 3D real-world datasets, LightM-UNet surpasses existing state-of-the-art models. In comparison to the renowned [nnU-Net](https://github.com/MIC-DKFZ/nnUNet) and contemporaneous [U-Mamba](https://github.com/bowang-lab/U-Mamba), LightM-UNet reduces the parameter count by **116X** and **224X**, respectively.
 
-![result](https://github.com/MrBlankness/LightM-UNet/blob/master/assets/main_result.pdf)
+![result](https://github.com/MrBlankness/LightM-UNet/blob/master/assets/main_result.png)
 
 ## Get Start 
 
