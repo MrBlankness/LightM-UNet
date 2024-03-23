@@ -131,3 +131,7 @@ If you find our work helpful, please consider citing the following papers
 We acknowledge all the authors of the employed public datasets, allowing the community to use these valuable resources for research purposes. 
 We also thank the authors of [nnU-Net](https://github.com/MIC-DKFZ/nnUNet), [Mamba](https://github.com/state-spaces/mamba) and [U-Mamba](https://github.com/bowang-lab/U-Mamba) for making their valuable code publicly available.
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=mrblankness/lightm-unet&type=Date)](https://star-history.com/#mrblankness/lightm-unet&Date)
+
