@@ -4,7 +4,7 @@ Official repository for "LightM-UNet: Mamba Assists in Lightweight UNet for Medi
 
 ## Release
 
--  **News**: ```2024/3/29```: Received feedback on [issue#6](https://github.com/MrBlankness/LightM-UNet/issues/6) and updated the erroneous code in the original code repository.
+-  🔥**News**: ```2024/3/29```: Received feedback on [issue#6](https://github.com/MrBlankness/LightM-UNet/issues/6) and updated the erroneous code in the original code repository.
 
 -  **News**: ```2024/3/17```: LightM-UNet released.
 
