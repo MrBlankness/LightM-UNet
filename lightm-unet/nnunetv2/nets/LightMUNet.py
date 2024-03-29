@@ -23,7 +23,7 @@ def get_dwconv_layer(
                              strides=stride, kernel_size=1, bias=bias, conv_only=True, groups=1)
     return torch.nn.Sequential(depth_conv, point_conv)
 
-class RVMLayer(nn.Module):
+class MambaLayer(nn.Module):
     def __init__(self, input_dim, output_dim, d_state = 16, d_conv = 4, expand = 2):
         super().__init__()
         self.input_dim = input_dim
@@ -54,10 +54,10 @@ class RVMLayer(nn.Module):
         return out
 
 
-def get_rvm_layer(
+def get_mamba_layer(
     spatial_dims: int, in_channels: int, out_channels: int, stride: int = 1
 ):
-    mamba_layer = RVMLayer(input_dim=in_channels, output_dim=out_channels)
+    mamba_layer = MambaLayer(input_dim=in_channels, output_dim=out_channels)
     if stride != 1:
         if spatial_dims==2:
             return nn.Sequential(mamba_layer, nn.MaxPool2d(kernel_size=stride, stride=stride))
@@ -93,10 +93,10 @@ class ResMambaBlock(nn.Module):
         self.norm1 = get_norm_layer(name=norm, spatial_dims=spatial_dims, channels=in_channels)
         self.norm2 = get_norm_layer(name=norm, spatial_dims=spatial_dims, channels=in_channels)
         self.act = get_act_layer(act)
-        self.conv1 = get_rvm_layer(
+        self.conv1 = get_mamba_layer(
             spatial_dims, in_channels=in_channels, out_channels=in_channels
         )
-        self.conv2 = get_rvm_layer(
+        self.conv2 = get_mamba_layer(
             spatial_dims, in_channels=in_channels, out_channels=in_channels
         )
 
@@ -197,7 +197,7 @@ class LightMUNet(nn.Module):
         self.norm = norm
         self.upsample_mode = UpsampleMode(upsample_mode)
         self.use_conv_final = use_conv_final
-        self.convInit = get_conv_layer(spatial_dims, in_channels, init_filters)
+        self.convInit = get_dwconv_layer(spatial_dims, in_channels, init_filters)
         self.down_layers = self._make_down_layers()
         self.up_layers, self.up_samples = self._make_up_layers()
         self.conv_final = self._make_final_conv(out_channels)
@@ -211,7 +211,7 @@ class LightMUNet(nn.Module):
         for i, item in enumerate(blocks_down):
             layer_in_channels = filters * 2**i
             downsample_mamba = (
-                get_rvm_layer(spatial_dims, layer_in_channels // 2, layer_in_channels, stride=2)
+                get_mamba_layer(spatial_dims, layer_in_channels // 2, layer_in_channels, stride=2)
                 if i > 0
                 else nn.Identity()
             )
@@ -236,7 +236,7 @@ class LightMUNet(nn.Module):
             up_layers.append(
                 nn.Sequential(
                     *[
-                        ResBlock(spatial_dims, sample_in_channels // 2, norm=norm, act=self.act)
+                        ResUpBlock(spatial_dims, sample_in_channels // 2, norm=norm, act=self.act)
                         for _ in range(blocks_up[i])
                     ]
                 )
@@ -255,7 +255,7 @@ class LightMUNet(nn.Module):
         return nn.Sequential(
             get_norm_layer(name=self.norm, spatial_dims=self.spatial_dims, channels=self.init_filters),
             self.act_mod,
-            get_conv_layer(self.spatial_dims, self.init_filters, out_channels, kernel_size=1, bias=True),
+            get_dwconv_layer(self.spatial_dims, self.init_filters, out_channels, kernel_size=1, bias=True),
         )
 
     def encode(self, x: torch.Tensor) -> tuple[torch.Tensor, list[torch.Tensor]]:
